@@ -1,0 +1,113 @@
+$form-background: #f4f7f6;
+$form-border: #e4e7e6;
+$input-background: #fff;
+$input-border: #dcdcdc;
+$input-focus-border: #66b2ff;
+$submit-background: #4caf50;
+$submit-hover-background: darken($submit-background, 10%);
+$reset-background: #f44336;
+$reset-hover-background: darken($reset-background, 10%);
+$submit-text-color: #fff;
+$text-dont-have-account: #333;
+$text-dont-have-account-hover: #66b2ff;
+
+form {
+    background-color: $form-background;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid $form-border;
+    max-width: 400px;
+    margin: 50px auto;
+    font-family: 'Arial', sans-serif;
+    
+    label {
+        display: block;
+        margin-bottom: 15px;
+        font-weight: bold;
+        color: #333;
+        
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid $input-border;
+            border-radius: 5px;
+            background-color: $input-background;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+
+            &:focus {
+                border-color: $input-focus-border;
+                outline: none;
+            }
+        }
+    }
+
+    div {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+
+        input[type="reset"] {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            background-color: $reset-background;
+            color: $submit-text-color;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: $reset-hover-background;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            background-color: $submit-background;
+            color: $submit-text-color;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: $submit-hover-background;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}
+
+span {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    color: $text-dont-have-account;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+        text-decoration: underline;
+        color: $text-dont-have-account-hover;
+    }
+}
