@@ -1,5 +1,8 @@
-import React from 'react'
-import { Button } from 'react-bootstrap';
+import React, { FC } from 'react';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 type GamePanelProps = {
     gridSize: number,
@@ -7,22 +10,27 @@ type GamePanelProps = {
     handleStartNewGame: () => void
 }
 
-export const GamePanel = (props: GamePanelProps) => {
+export const GamePanel: FC<GamePanelProps> = (props) => {
 
     const { gridSize, setGridSize, handleStartNewGame } = props;
 
-    return (
-        <div className="game-panel" >
-            <div className="input-group" >
-                <label>
-                    Map Size:
-                    <input type="number" name="mapSize" onChange={(event) => setGridSize(parseInt(event.target.value))} value={gridSize} />
-                </label>
-            </div>
+    const handleSetMapSize = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setGridSize(parseInt(event.target.value));
+    }
 
-            <div>
-                <Button onClick={handleStartNewGame}>Start</Button>
-            </div>
-        </div>
+    return (
+        <Container fluid>
+            <Row>
+                <Col>
+                    <label>
+                        Map Size:
+                        <input type="number" name="mapSize" onChange={handleSetMapSize} value={gridSize} />
+                    </label>
+                </Col>
+                <Col>
+                    <Button variant="primary" onClick={handleStartNewGame}>Start</Button>
+                </Col>
+            </Row>
+        </Container>
     )
 }
