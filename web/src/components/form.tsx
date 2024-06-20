@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
-import '../../styles/form.scss'
+import './../styles/form.scss'
+
+type FormObj = {
+    name: string,
+    password: string
+}
 
 const initFormObj = {
     name: '',
@@ -32,14 +37,16 @@ export const Form = () => {
 
     return (
         <form onSubmit={handleSubmitForm} onReset={handleResetForm} >
-            <label>
-                Name:
-                <input type="text" name="name" onChange={handleFormObj} value={formObj.name} />
-            </label>
-            <label>
-                Password:
-                <input type="text" name="password" onChange={handleFormObj} value={formObj.password} />
-            </label>
+            {
+                Object.keys(initFormObj).map((key, index) => {
+                    return (
+                        <label key={index}>
+                            {key.charAt(0).toUpperCase() + key.slice(1)}:
+                            <input type="text" name={key} onChange={handleFormObj} value={formObj[key as keyof FormObj]} />
+                        </label>
+                    )
+                })
+            }
 
             <div>
                 <input type="reset" value="Reset" />

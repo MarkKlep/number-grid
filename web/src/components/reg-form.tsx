@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import '../../styles/form.scss'
+import './../styles/form.scss'
 
 type FormObj = {
     name: string,

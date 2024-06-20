@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Form } from './components/form/form';
-import { RegForm } from './components/reg-form/reg-form';
+import { Form } from './components/form';
+import { RegForm } from './components/reg-form';
+import { SinglePlay } from './components/single-play';
 import './App.css';
 
 function App() {
@@ -13,13 +14,8 @@ function App() {
   return (
     <div className="App">
       
-      <Form />
-      
-      <span onClick={handleOpenRegForm}>Don`t have an account?</span>
-
-      {isRegFormOpen && (
-          <RegForm />
-      )}
+      <SinglePlay />
+     
     </div>
   );
 }
