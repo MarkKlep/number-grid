@@ -1,35 +1,39 @@
 import React, { useState, useEffect } from 'react'
-import { matrixNumbersGenerator } from '../utilities/matrix-processing';
+import { Container, Row, Col } from 'react-bootstrap'
+import "../styles/grid.scss";
+import { GridCell } from './single-play';
 
 type GridRendererProps = {
-    matrixNumbers: number[][],
+    gridCells: GridCell[][],
+    handleGridUpdate: (rowIndex: number, cellIndex: number) => void
 }
 
 export const GridRenderer = (props: GridRendererProps) => {
-
-    const { matrixNumbers } = props;
+    const { gridCells, handleGridUpdate } = props;
 
     return (
-        <table>
-            <tbody>
-                {
-                    matrixNumbers.map((row, rowIndex) => {
-                        return (
-                            <tr key={rowIndex}>
-                                {
-                                    row.map((cell, cellIndex) => {
-                                        return (
-                                            <td key={cellIndex}>
-                                                {cell}
-                                            </td>
-                                        )
-                                    })
-                                }
-                            </tr>
-                        )
-                    })
-                }
-            </tbody>
-        </table>
+        <Container className='nums-square' >
+            {
+                gridCells.map((row, rowIndex) => {
+                     return (
+                        <Row key={rowIndex} className='row-square' >
+                            {
+                                row.map((cell, cellIndex) => {
+                                    return (
+                                        <Col key={cellIndex} className={cell.clicked ? 'clicked-cell-square' : 'cell-square'} >
+                                            <div className={'cell-content'} onClick={() => handleGridUpdate(rowIndex, cellIndex)} >
+                                                <div className="cell-value">
+                                                    {cell.value}
+                                                </div>
+                                            </div>
+                                        </Col>
+                                    )
+                                })
+                            }
+                        </Row>
+                    )
+                })
+            }
+        </Container>
     )
 }

@@ -1,0 +1,61 @@
+$circle-color: #333;
+$circle-content-color: #fff;
+$clicked-circle-color: blue;
+$clicked-circle-content-color: #333;
+
+$number-color: #fff;
+$clicked-number-color: #fff;
+
+.nums-square {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+}
+
+.cell-square, .clicked-cell-square {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #e5e5e5;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease;
+}
+
+.cell-square {
+    background: #fff;
+
+    &:hover {
+        background: #ddd;
+    }
+}
+
+.cell-content {
+    width: 50px;
+    height: 50px;
+    background-color: $circle-color;
+    color: $circle-content-color;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.2);
+        cursor: pointer;
+    }
+}
+
+.clicked-cell-square .cell-content {
+    background-color: $clicked-circle-color;
+    color: $clicked-circle-content-color;
+}
+
+.cell-value {
+    font-size: large;
+    font-weight: bold;
+    color: $number-color;
+}

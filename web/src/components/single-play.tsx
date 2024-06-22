@@ -7,9 +7,16 @@ const alertMessages: readonly string[] = [
     'Grid size must be greater than 1'
 ];
 
+export type GridCell = {
+    value: number,
+    rowIndex: number,
+    cellIndex: number,
+    clicked: boolean
+}
+
 export const SinglePlay = () => {
     const [gridSize, setGridSize] = useState(2);
-    const [matrixNumbers, setMatrixNumbers] = useState<number[][]>([]);
+    const [gridCells, setGridCells] = useState<GridCell[][]>([]);
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
     const handleStartNewGame = () => {
@@ -20,8 +27,36 @@ export const SinglePlay = () => {
 
         setAlertMessage(null);
 
-        const matrix = matrixNumbersGenerator(gridSize);
-        setMatrixNumbers(matrix);
+        const numsMatrix = matrixNumbersGenerator(gridSize);
+        setGridCells(
+            numsMatrix.map((row, rowIndex) => {
+                return row.map((cell, cellIndex) => {
+                    return {
+                        value: cell,
+                        rowIndex,
+                        cellIndex,
+                        clicked: false
+                    }
+                })
+            })
+        );
+    }
+
+    const handleGridUpdate = (rowIndex: number, cellIndex: number) => {
+
+        setGridCells(
+            gridCells.map((row, rIndex) => {
+                return row.map((cell, cIndex) => {
+                    if(rIndex === rowIndex && cIndex === cellIndex) {
+                        return {
+                            ...cell,
+                            clicked: true
+                        }
+                    }
+                    return cell;
+                })
+            })
+        );
     }
 
     return (
@@ -30,8 +65,8 @@ export const SinglePlay = () => {
             <GamePanel gridSize={gridSize} setGridSize={setGridSize} handleStartNewGame={handleStartNewGame} />
 
             {
-                (matrixNumbers.length > 0 && alertMessage === null) ? (
-                <GridRenderer matrixNumbers={matrixNumbers} />
+                (gridCells.length > 0 && alertMessage === null) ? (
+                    <GridRenderer gridCells={gridCells} handleGridUpdate={handleGridUpdate} />
                 ) : (
                     <div>
                         {alertMessage}
