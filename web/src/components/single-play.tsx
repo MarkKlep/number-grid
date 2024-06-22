@@ -18,6 +18,7 @@ export const SinglePlay = () => {
     const [gridSize, setGridSize] = useState(2);
     const [gridCells, setGridCells] = useState<GridCell[][]>([]);
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
+    const [failedClicks, setFailedClicks] = useState<number>(0);
 
     const handleStartNewGame = () => {
         if(gridSize < 2) {
@@ -42,7 +43,24 @@ export const SinglePlay = () => {
         );
     }
 
+    const ascOrderWrongClick = (rowIndex: number, cellIndex: number): boolean => {
+        const clickedCell = gridCells[rowIndex][cellIndex];
+
+        const clickedCellsArr = gridCells.flat().filter(cell => !cell.clicked);
+
+        if(clickedCellsArr.find(cell => cell.value < clickedCell.value)) {
+            return true;
+        }
+
+        return false;
+    }
+
     const handleGridUpdate = (rowIndex: number, cellIndex: number) => {
+        if(gridCells[rowIndex][cellIndex].clicked) return;
+        if(ascOrderWrongClick(rowIndex, cellIndex)) {
+            setFailedClicks(failedClicks => failedClicks + 1);
+            return;
+        };
 
         setGridCells(
             gridCells.map((row, rIndex) => {
