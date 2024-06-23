@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { matrixNumbersGenerator } from '../utilities/matrix-processing';
 import { GridRenderer } from './grid-renderer';
 import { GamePanel } from './game-panel';
@@ -11,14 +11,22 @@ export type GridCell = {
     value: number,
     rowIndex: number,
     cellIndex: number,
-    clicked: boolean
+    done: boolean,
+    failed: boolean,
 }
 
 export const SinglePlay = () => {
     const [gridSize, setGridSize] = useState(2);
     const [gridCells, setGridCells] = useState<GridCell[][]>([]);
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
-    const [failedClicks, setFailedClicks] = useState<number>(0);
+
+    useEffect(() => {
+        const isGameOver = gridCells.flat().every(cell => cell.done || cell.failed);
+
+        if(isGameOver) {
+            setAlertMessage('Congratulations! You have completed the game');
+        }
+    }, [gridCells]);
 
     const handleStartNewGame = () => {
         if(gridSize < 2) {
@@ -36,7 +44,8 @@ export const SinglePlay = () => {
                         value: cell,
                         rowIndex,
                         cellIndex,
-                        clicked: false
+                        done: false,
+                        failed: false,
                     }
                 })
             })
@@ -46,9 +55,21 @@ export const SinglePlay = () => {
     const ascOrderWrongClick = (rowIndex: number, cellIndex: number): boolean => {
         const clickedCell = gridCells[rowIndex][cellIndex];
 
-        const clickedCellsArr = gridCells.flat().filter(cell => !cell.clicked);
+        if(gridCells.flat().find(cell => cell.value < clickedCell.value && !cell.failed && !cell.done)) {
+            setGridCells(
+                gridCells.map((row, rowIndex) => {
+                    return row.map((cell, cellIndex) => {
+                        if(clickedCell.rowIndex === rowIndex && clickedCell.cellIndex === cellIndex) {
+                            return {
+                                ...cell,
+                                failed: true
+                            }
+                        }
+                        return cell;
+                    })
+                })
+            );
 
-        if(clickedCellsArr.find(cell => cell.value < clickedCell.value)) {
             return true;
         }
 
@@ -56,11 +77,8 @@ export const SinglePlay = () => {
     }
 
     const handleGridUpdate = (rowIndex: number, cellIndex: number) => {
-        if(gridCells[rowIndex][cellIndex].clicked) return;
-        if(ascOrderWrongClick(rowIndex, cellIndex)) {
-            setFailedClicks(failedClicks => failedClicks + 1);
-            return;
-        };
+        if(gridCells[rowIndex][cellIndex].failed) return;
+        if(ascOrderWrongClick(rowIndex, cellIndex)) return;
 
         setGridCells(
             gridCells.map((row, rIndex) => {
@@ -68,7 +86,7 @@ export const SinglePlay = () => {
                     if(rIndex === rowIndex && cIndex === cellIndex) {
                         return {
                             ...cell,
-                            clicked: true
+                            done: true
                         }
                     }
                     return cell;

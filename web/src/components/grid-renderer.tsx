@@ -19,11 +19,19 @@ export const GridRenderer = (props: GridRendererProps) => {
                         <Row key={rowIndex} className='row-square' >
                             {
                                 row.map((cell, cellIndex) => {
+                                    const cellClasses = [
+                                        'cell-square',
+                                        cell.done ? 'done-cell-square' : '',
+                                        cell.failed ? 'failed-cell-square' : ''
+                                    ].join(' ');
+
                                     return (
-                                        <Col key={cellIndex} className={cell.clicked ? 'clicked-cell-square' : 'cell-square'} >
-                                            <div className={'cell-content'} onClick={() => handleGridUpdate(rowIndex, cellIndex)} >
-                                                <div className="cell-value">
-                                                    {cell.value}
+                                        <Col key={cellIndex} className={cellClasses} >
+                                            <div className='cell-content' onClick={() => handleGridUpdate(rowIndex, cellIndex)} >
+                                                <div className='cell-value'>
+                                                    {
+                                                        cell.failed ? 'X' : cell.value
+                                                    }
                                                 </div>
                                             </div>
                                         </Col>
