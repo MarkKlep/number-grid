@@ -5,11 +5,11 @@ import { GridCell } from './single-play';
 
 type GridRendererProps = {
     gridCells: GridCell[][],
-    handleGridUpdate: (rowIndex: number, cellIndex: number) => void
+    handlePlayerClick: (rowIndex: number, cellIndex: number) => void
 }
 
 export const GridRenderer = (props: GridRendererProps) => {
-    const { gridCells, handleGridUpdate } = props;
+    const { gridCells, handlePlayerClick } = props;
 
     return (
         <Container className='nums-square' >
@@ -27,7 +27,7 @@ export const GridRenderer = (props: GridRendererProps) => {
 
                                     return (
                                         <Col key={cellIndex} className={cellClasses} >
-                                            <div className='cell-content' onClick={() => handleGridUpdate(rowIndex, cellIndex)} >
+                                            <div className='cell-content' onClick={() => handlePlayerClick(rowIndex, cellIndex)} >
                                                 <div className='cell-value'>
                                                     {
                                                         cell.failed ? 'X' : cell.value

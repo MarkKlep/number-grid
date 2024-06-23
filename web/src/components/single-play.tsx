@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { matrixNumbersGenerator } from '../utilities/matrix-processing';
 import { GridRenderer } from './grid-renderer';
 import { GamePanel } from './game-panel';
+import gridNumberClickSound from '../assets/grid-number-click.mp3';
 
 const alertMessages: readonly string[] = [
     'Grid size must be greater than 1'
@@ -76,7 +77,10 @@ export const SinglePlay = () => {
         return false;
     }
 
-    const handleGridUpdate = (rowIndex: number, cellIndex: number) => {
+    const handlePlayerClick = (rowIndex: number, cellIndex: number) => {
+        const audio = new Audio(gridNumberClickSound);
+        audio.play();
+
         if(gridCells[rowIndex][cellIndex].failed) return;
         if(ascOrderWrongClick(rowIndex, cellIndex)) return;
 
@@ -102,7 +106,7 @@ export const SinglePlay = () => {
 
             {
                 (gridCells.length > 0 && alertMessage === null) ? (
-                    <GridRenderer gridCells={gridCells} handleGridUpdate={handleGridUpdate} />
+                    <GridRenderer gridCells={gridCells} handlePlayerClick={handlePlayerClick} />
                 ) : (
                     <div>
                         {alertMessage}
