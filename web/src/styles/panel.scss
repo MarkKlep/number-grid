@@ -1,0 +1,56 @@
+.game-panel-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  
+    .input-group {
+      margin-bottom: 15px;
+      width: 30%;
+  
+      &-text {
+        background-color: #efece9;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem 0 0 0.25rem;
+        font-weight: 600;
+      }
+  
+      input {
+        border: 1px solid #ced4da;
+        border-radius: 0 0.25rem 0.25rem 0;
+        
+        &:focus {
+          border-color: #80bdff;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+      }
+    }
+  
+    .dropdown-button {
+      margin-bottom: 15px;
+  
+      .dropdown-toggle {
+        background-color: #007bff;
+        border-color: #007bff;
+
+        &:hover, &:focus {
+          background-color: #0056b3;
+          border-color: #0056b3;
+        }
+      }
+    }
+  
+    .start-button {
+      width: 50%;
+      background-color: #28a745;
+      border-color: #28a745;
+
+      &:hover, &:focus {
+        background-color: #218838;
+        border-color: #1e7e34;
+      }
+    }
+  }
+  

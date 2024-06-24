@@ -21,6 +21,8 @@ export const SinglePlay = () => {
     const [gridCells, setGridCells] = useState<GridCell[][]>([]);
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
+    const [selectedGameMode, setSelectedGameMode] = useState<string>('');
+
     useEffect(() => {
         const isGameOver = gridCells.flat().every(cell => cell.done || cell.failed);
 
@@ -102,7 +104,7 @@ export const SinglePlay = () => {
     return (
         <div>
 
-            <GamePanel gridSize={gridSize} setGridSize={setGridSize} handleStartNewGame={handleStartNewGame} />
+            <GamePanel gridSize={gridSize} setGridSize={setGridSize} handleStartNewGame={handleStartNewGame} setSelectedGameMode={setSelectedGameMode} />
 
             {
                 (gridCells.length > 0 && alertMessage === null) ? (
