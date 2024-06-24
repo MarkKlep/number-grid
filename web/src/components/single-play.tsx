@@ -8,6 +8,8 @@ const alertMessages: readonly string[] = [
     'Grid size must be greater than 1'
 ];
 
+const gameModes: readonly string[] = ['football', 'number grid'];
+
 export type GridCell = {
     value: number,
     rowIndex: number,
@@ -104,7 +106,7 @@ export const SinglePlay = () => {
     return (
         <div>
 
-            <GamePanel gridSize={gridSize} setGridSize={setGridSize} handleStartNewGame={handleStartNewGame} setSelectedGameMode={setSelectedGameMode} />
+            <GamePanel gridSize={gridSize} setGridSize={setGridSize} handleStartNewGame={handleStartNewGame} setSelectedGameMode={setSelectedGameMode} gameModes={gameModes} />
 
             {
                 (gridCells.length > 0 && alertMessage === null) ? (

@@ -11,19 +11,29 @@ import '../styles/panel.scss';
 
 type GamePanelProps = {
     gridSize: number,
+    gameModes: readonly string[],
     setSelectedGameMode: (gameMode: string) => void,
     setGridSize: (gridSize: number) => void,
     handleStartNewGame: () => void
 }
 
-const gameModes: readonly string[] = ['football', 'number grid'];
-
 export const GamePanel: FC<GamePanelProps> = (props) => {
 
-    const { gridSize, setGridSize, handleStartNewGame, setSelectedGameMode } = props;
+    const { gridSize, setGridSize, handleStartNewGame, setSelectedGameMode, gameModes } = props;
 
     const handleSetMapSize = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setGridSize(parseInt(event.target.value));
+        const gridSize = parseInt(event.target.value);
+
+        if (gridSize < 2) {
+            alert('Grid size must be greater than 1');
+            return;
+        }
+        else if (gridSize > 10) {
+            alert('Grid size must be less than 10');
+            return;
+        }
+
+        setGridSize(gridSize);
     }
 
     const handleSelectGameMode = (eventKey: string | null) => {
