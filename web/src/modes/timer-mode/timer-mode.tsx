@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
+import { ModalWindow } from './modal-window';
 import '../../styles/timer-mode-panel.scss';
 
 type TimerModeProps = {
@@ -123,6 +124,12 @@ export const TimerMode: FC<TimerModeProps> = (props) => {
                         gridCells={gridCells} 
                         handlePlayerClick={handlePlayerClick} 
                     />
+                )
+            }
+
+            {
+                gameIsOver() && (
+                    <ModalWindow timer={timer} />
                 )
             }
         </div>
