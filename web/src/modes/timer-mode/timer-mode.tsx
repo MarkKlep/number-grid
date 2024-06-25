@@ -10,8 +10,8 @@ type TimerModeProps = {
 
 export const TimerMode: FC<TimerModeProps> = (props) => {
     const { gridSize } = props;
-
     const [gridCells, setGridCells] = useState<GridCell[][]>([]);
+    const [timer, setTimer] = useState<number>(0);
 
     const generateGrid = () => {
         const numsMatrix = matrixNumbersGenerator(gridSize);
@@ -79,10 +79,21 @@ export const TimerMode: FC<TimerModeProps> = (props) => {
 
     useEffect(() => {
         generateGrid();
+
+        const intervalID = setInterval(() => {
+            setTimer(timer => timer + 1);
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalID);
+        }
     }, []);
 
     return (
         <div>
+            <div className="timer">
+                {timer}
+            </div>
             {
                 gridCells.length > 0 && (
                     <GridRenderer 
