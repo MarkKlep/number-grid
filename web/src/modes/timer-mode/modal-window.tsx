@@ -3,11 +3,12 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 type ModalWindowProps = {
-    timer: number
+    timer: number,
+    wrongClicks: number
 }
 
 export const ModalWindow: FC<ModalWindowProps> = (props) => {
-    const { timer } = props;
+    const { timer, wrongClicks } = props;
 
     const [show, setShow] = useState(true);
 
@@ -19,7 +20,8 @@ export const ModalWindow: FC<ModalWindowProps> = (props) => {
           <Modal.Header closeButton>
             <Modal.Title>Game is over</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Woohoo, you`r time is {timer}sec.</Modal.Body>
+          <Modal.Body>Woohoo, you`re time is {timer}sec.</Modal.Body>
+          <Modal.Body>Wrong clicks: {wrongClicks}</Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleClose}>
               Close

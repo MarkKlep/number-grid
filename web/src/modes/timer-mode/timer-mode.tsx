@@ -3,11 +3,8 @@ import { matrixNumbersGenerator } from '../../utilities/matrix-processing';
 import { GridRenderer } from './grid-renderer';
 import gridNumberClickSound from '../../assets/grid-number-click.mp3';
 import { GridCell } from '../../types/timer-mode';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Badge from 'react-bootstrap/Badge';
 import { ModalWindow } from './modal-window';
+import { Panel } from './panel';
 import '../../styles/timer-mode-panel.scss';
 
 type TimerModeProps = {
@@ -36,6 +33,7 @@ export const TimerMode: FC<TimerModeProps> = (props) => {
     const { gridSize } = props;
     const [gridCells, setGridCells] = useState<GridCell[][]>(generateGrid(gridSize));
     const [timer, setTimer] = useState<number>(0);
+    const [wrongClicks, setWrongClicks] = useState<number>(0);
 
     const intervalID = useRef<any>(null);
 
@@ -61,6 +59,7 @@ export const TimerMode: FC<TimerModeProps> = (props) => {
                 })
             );
 
+            setWrongClicks(wrongClicks + 1);
             return true;
         }
 
@@ -89,6 +88,18 @@ export const TimerMode: FC<TimerModeProps> = (props) => {
         );
     }
 
+    const handleNewGame = () => {
+        setGridCells(generateGrid(gridSize));
+        setTimer(0);
+        setWrongClicks(0);
+
+        clearInterval(intervalID.current);
+
+        intervalID.current = setInterval(() => {
+            setTimer(timer => timer + 1);
+        }, 1000);
+    }
+
     useEffect(() => {
         intervalID.current = setInterval(() => {
             setTimer(timer => timer + 1);
@@ -108,15 +119,7 @@ export const TimerMode: FC<TimerModeProps> = (props) => {
 
     return (
         <div>
-            <Container className='timer-mode-panel'>
-                <Row>
-                    <Col>
-                        <Badge bg="warning" text="dark" className="timer-badge">
-                            Timer: {timer} sec.
-                        </Badge>
-                    </Col>
-                </Row>
-            </Container>
+            <Panel timer={timer} wrongClicks={wrongClicks} handleNewGame={handleNewGame} />
 
             {
                 gridCells.length > 0 && (
@@ -129,7 +132,7 @@ export const TimerMode: FC<TimerModeProps> = (props) => {
 
             {
                 gameIsOver() && (
-                    <ModalWindow timer={timer} />
+                    <ModalWindow timer={timer} wrongClicks={wrongClicks} />
                 )
             }
         </div>
