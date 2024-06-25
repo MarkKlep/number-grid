@@ -1,120 +1,33 @@
-import React, { useState, useEffect } from 'react'
-import { matrixNumbersGenerator } from '../utilities/matrix-processing';
-import { GridRenderer } from './grid-renderer';
-import { GamePanel } from './game-panel';
-import gridNumberClickSound from '../assets/grid-number-click.mp3';
+import React, { useState } from 'react'
+import { GamePanel } from '../components/game-panel';
+import { TimerMode } from '../modes/timer-mode/timer-mode';
 
-const alertMessages: readonly string[] = [
-    'Grid size must be greater than 1'
-];
-
-const gameModes: readonly string[] = ['football', 'number grid'];
-
-export type GridCell = {
-    value: number,
-    rowIndex: number,
-    cellIndex: number,
-    done: boolean,
-    failed: boolean,
-}
+const gameModes: readonly string[] = ['timer', 'don`t touch'];
 
 export const SinglePlay = () => {
-    const [gridSize, setGridSize] = useState(2);
-    const [gridCells, setGridCells] = useState<GridCell[][]>([]);
-    const [alertMessage, setAlertMessage] = useState<string | null>(null);
-
     const [selectedGameMode, setSelectedGameMode] = useState<string>('');
-
-    useEffect(() => {
-        const isGameOver = gridCells.flat().every(cell => cell.done || cell.failed);
-
-        if(isGameOver) {
-            setAlertMessage('Congratulations! You have completed the game');
-        }
-    }, [gridCells]);
+    const [gridSize, setGridSize] = useState(2);
+    const [startNewGame, setStartNewGame] = useState<boolean>(false);
 
     const handleStartNewGame = () => {
-        if(gridSize < 2) {
-            setAlertMessage(alertMessages[0]);
-            return;
-        }
-
-        setAlertMessage(null);
-
-        const numsMatrix = matrixNumbersGenerator(gridSize);
-        setGridCells(
-            numsMatrix.map((row, rowIndex) => {
-                return row.map((cell, cellIndex) => {
-                    return {
-                        value: cell,
-                        rowIndex,
-                        cellIndex,
-                        done: false,
-                        failed: false,
-                    }
-                })
-            })
-        );
-    }
-
-    const ascOrderWrongClick = (rowIndex: number, cellIndex: number): boolean => {
-        const clickedCell = gridCells[rowIndex][cellIndex];
-
-        if(gridCells.flat().find(cell => cell.value < clickedCell.value && !cell.failed && !cell.done)) {
-            setGridCells(
-                gridCells.map((row, rowIndex) => {
-                    return row.map((cell, cellIndex) => {
-                        if(clickedCell.rowIndex === rowIndex && clickedCell.cellIndex === cellIndex) {
-                            return {
-                                ...cell,
-                                failed: true
-                            }
-                        }
-                        return cell;
-                    })
-                })
-            );
-
-            return true;
-        }
-
-        return false;
-    }
-
-    const handlePlayerClick = (rowIndex: number, cellIndex: number) => {
-        const audio = new Audio(gridNumberClickSound);
-        audio.play();
-
-        if(gridCells[rowIndex][cellIndex].failed) return;
-        if(ascOrderWrongClick(rowIndex, cellIndex)) return;
-
-        setGridCells(
-            gridCells.map((row, rIndex) => {
-                return row.map((cell, cIndex) => {
-                    if(rIndex === rowIndex && cIndex === cellIndex) {
-                        return {
-                            ...cell,
-                            done: true
-                        }
-                    }
-                    return cell;
-                })
-            })
-        );
+        setStartNewGame(!startNewGame);
     }
 
     return (
         <div>
 
-            <GamePanel gridSize={gridSize} setGridSize={setGridSize} handleStartNewGame={handleStartNewGame} setSelectedGameMode={setSelectedGameMode} gameModes={gameModes} />
+            <GamePanel 
+                gridSize={gridSize} 
+                startNewGame={startNewGame}
+                setGridSize={setGridSize} 
+                handleStartNewGame={handleStartNewGame} 
+                setSelectedGameMode={setSelectedGameMode} 
+                gameModes={gameModes} 
+            />
 
             {
-                (gridCells.length > 0 && alertMessage === null) ? (
-                    <GridRenderer gridCells={gridCells} handlePlayerClick={handlePlayerClick} />
-                ) : (
-                    <div>
-                        {alertMessage}
-                    </div>
+                (selectedGameMode === gameModes[0] && startNewGame) && (
+                    <TimerMode gridSize={gridSize} />
                 )
             }
 

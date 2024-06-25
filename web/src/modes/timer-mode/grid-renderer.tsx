@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import "../styles/grid.scss";
-import { GridCell } from './single-play';
+import "../../styles/grid.scss";
+import { GridCell } from '../../types/timer-mode';
 
 type GridRendererProps = {
     gridCells: GridCell[][],

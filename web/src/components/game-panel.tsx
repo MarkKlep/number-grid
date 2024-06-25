@@ -12,6 +12,7 @@ import '../styles/panel.scss';
 type GamePanelProps = {
     gridSize: number,
     gameModes: readonly string[],
+    startNewGame: boolean,
     setSelectedGameMode: (gameMode: string) => void,
     setGridSize: (gridSize: number) => void,
     handleStartNewGame: () => void
@@ -19,7 +20,7 @@ type GamePanelProps = {
 
 export const GamePanel: FC<GamePanelProps> = (props) => {
 
-    const { gridSize, setGridSize, handleStartNewGame, setSelectedGameMode, gameModes } = props;
+    const { gridSize, setGridSize, handleStartNewGame, setSelectedGameMode, gameModes, startNewGame } = props;
 
     const handleSetMapSize = (event: React.ChangeEvent<HTMLInputElement>) => {
         const gridSize = parseInt(event.target.value);
@@ -65,7 +66,14 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
                     </DropdownButton>
                 </Col>
                 <Col>
-                    <Button variant="primary" onClick={handleStartNewGame} className="start-button">Start</Button>
+                    <Button 
+                        variant={startNewGame ? 'danger' : 'success'}
+                        onClick={handleStartNewGame} 
+                        className="start-button">
+                        {
+                            startNewGame ? 'Quite' : 'Start'
+                        }
+                    </Button>
                 </Col>
             </Row>
         </Container>
