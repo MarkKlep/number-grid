@@ -20,6 +20,7 @@ export const SinglePlay = () => {
                 gridSize={gridSize} 
                 startNewGame={startNewGame}
                 setGridSize={setGridSize} 
+                setStartNewGame={setStartNewGame}
                 handleStartNewGame={handleStartNewGame} 
                 setSelectedGameMode={setSelectedGameMode} 
                 gameModes={gameModes} 

@@ -13,6 +13,7 @@ type GamePanelProps = {
     gridSize: number,
     gameModes: readonly string[],
     startNewGame: boolean,
+    setStartNewGame: (startNewGame: boolean) => void,
     setSelectedGameMode: (gameMode: string) => void,
     setGridSize: (gridSize: number) => void,
     handleStartNewGame: () => void
@@ -20,7 +21,7 @@ type GamePanelProps = {
 
 export const GamePanel: FC<GamePanelProps> = (props) => {
 
-    const { gridSize, setGridSize, handleStartNewGame, setSelectedGameMode, gameModes, startNewGame } = props;
+    const { gridSize, setGridSize, handleStartNewGame, setSelectedGameMode, gameModes, startNewGame, setStartNewGame } = props;
 
     const handleSetMapSize = (event: React.ChangeEvent<HTMLInputElement>) => {
         const gridSize = parseInt(event.target.value);
@@ -40,6 +41,7 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
     const handleSelectGameMode = (eventKey: string | null) => {
         if (eventKey) {
             setSelectedGameMode(eventKey);
+            setStartNewGame(false);
         }
     }
 
