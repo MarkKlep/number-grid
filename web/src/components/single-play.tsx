@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { GamePanel } from '../components/game-panel';
 import { TimerMode } from '../modes/timer-mode/timer-mode';
-import { DoNotTouch } from '../modes/do-not-touch-mode';
+import { DoNotTouch } from '../modes/do-not-touch-mode/do-not-touch-mode';
 
 const gameModes: readonly string[] = ['timer', 'don`t touch'];
 
