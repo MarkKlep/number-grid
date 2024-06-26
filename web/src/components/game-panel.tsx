@@ -13,6 +13,7 @@ type GamePanelProps = {
     gridSize: number,
     gameModes: readonly string[],
     startNewGame: boolean,
+    selectedGameMode: string,
     setStartNewGame: (startNewGame: boolean) => void,
     setSelectedGameMode: (gameMode: string) => void,
     setGridSize: (gridSize: number) => void,
@@ -21,7 +22,7 @@ type GamePanelProps = {
 
 export const GamePanel: FC<GamePanelProps> = (props) => {
 
-    const { gridSize, setGridSize, handleStartNewGame, setSelectedGameMode, gameModes, startNewGame, setStartNewGame } = props;
+    const { gridSize, setGridSize, selectedGameMode, handleStartNewGame, setSelectedGameMode, gameModes, startNewGame, setStartNewGame } = props;
 
     const handleSetMapSize = (event: React.ChangeEvent<HTMLInputElement>) => {
         const gridSize = parseInt(event.target.value);
@@ -61,7 +62,7 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
                     </InputGroup>
                 </Col>
                 <Col>
-                    <DropdownButton id="dropdown-basic-button" title="Select Game Mode" onSelect={handleSelectGameMode} className="dropdown-button">
+                    <DropdownButton id="dropdown-basic-button" title={selectedGameMode === "" ? "Select Game Mode" : selectedGameMode} onSelect={handleSelectGameMode} className="dropdown-button">
                         {gameModes.map((gameMode, index) => {
                             return <Dropdown.Item key={index} eventKey={gameMode}>{gameMode}</Dropdown.Item>
                         })}

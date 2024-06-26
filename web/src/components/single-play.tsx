@@ -18,6 +18,7 @@ export const SinglePlay = () => {
 
             <GamePanel 
                 gridSize={gridSize} 
+                selectedGameMode={selectedGameMode}
                 startNewGame={startNewGame}
                 setGridSize={setGridSize} 
                 setStartNewGame={setStartNewGame}
