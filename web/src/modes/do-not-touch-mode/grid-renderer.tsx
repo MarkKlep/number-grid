@@ -38,7 +38,7 @@ export const GridRenderer = (props: GridRendererProps) => {
                                             </Col>
                                             ) : (
                                             <Col key={cellIndex} className={cellClasses} >
-                                                <div className='cell-content' >
+                                                <div className='cell-content' onClick={() => handlePlayerClick(rowIndex, cellIndex)} >
                                                     <div className='cell-value'>
                                                         {
                                                             'BOMB'

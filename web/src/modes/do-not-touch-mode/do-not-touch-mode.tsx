@@ -1,6 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
 import { matrixWithDangerousCells } from '../../utilities/matrix-processing';
-import { gameIsOver } from '../../utilities/game-state-control';
 import { GridRenderer } from './grid-renderer';
 import { GridCellDoNotTouchMode } from '../../types/do-not-touch-mode';
 
@@ -12,7 +11,11 @@ export const DoNotTouch: FC<DoNotTouchProps> = (props) => {
     const { gridSize } = props;
     const [gridCells, setGridCells] = useState<GridCellDoNotTouchMode[][]>(matrixWithDangerousCells(gridSize));
     const [wrongClicks, setWrongClicks] = useState<number>(0);
+    const [deadClick, setDeadClick] = useState<boolean>(false);
 
+    const gameIsOver = () => {
+        return gridCells.flat().every(cell => cell.done || cell.failed);
+    }
 
     const ascOrderWrongClick = (rowIndex: number, cellIndex: number): boolean => {
         const clickedCell = gridCells[rowIndex][cellIndex];
@@ -43,8 +46,10 @@ export const DoNotTouch: FC<DoNotTouchProps> = (props) => {
         // const audio = new Audio(gridNumberClickSound);
         // audio.play();
 
-        if(gridCells[rowIndex][cellIndex].dangerous) { alert("Failed"); return;};
-        if(gridCells[rowIndex][cellIndex].failed) return;
+        const clickedCell = gridCells[rowIndex][cellIndex];
+
+        if(clickedCell.dangerous) setDeadClick(true);
+        if(clickedCell.failed) return;
         if(ascOrderWrongClick(rowIndex, cellIndex)) return;
 
         setGridCells(
@@ -67,6 +72,12 @@ export const DoNotTouch: FC<DoNotTouchProps> = (props) => {
             {
                 gridCells.length > 0 && (
                     <GridRenderer gridCells={gridCells} handlePlayerClick={handlePlayerClick} />
+                )
+            }
+
+            {
+                (gameIsOver() || deadClick) && (
+                    <h1>Game Over</h1>
                 )
             }
 
