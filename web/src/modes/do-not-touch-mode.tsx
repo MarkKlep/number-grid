@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-export const DoNotTouch = () => {
+type DoNotTouchProps = {
+    gridSize: number
+}
+
+export const DoNotTouch: FC<DoNotTouchProps> = (props) => {
+    const { gridSize } = props;
+
     return (
         <div>
             <h1>Do not touch this file</h1>
