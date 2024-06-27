@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
+import { formatTime } from '../../utilities/time-formater';
 
 type PanelProps = {
     timer: number,
@@ -19,7 +20,7 @@ export const Panel: FC<PanelProps> = (props) => {
             <Row>
                 <Col>
                     <Badge bg="warning" text="dark" className="timer-badge">
-                        Timer: {timer} sec.
+                        Timer: {formatTime(timer)} sec.
                     </Badge>
                 </Col>
                 <Col>

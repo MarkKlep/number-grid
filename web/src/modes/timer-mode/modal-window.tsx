@@ -1,6 +1,7 @@
 import React, { useState, FC } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { formatTime } from '../../utilities/time-formater';
 
 type ModalWindowProps = {
     timer: number,
@@ -20,7 +21,7 @@ export const ModalWindow: FC<ModalWindowProps> = (props) => {
           <Modal.Header closeButton>
             <Modal.Title>Game is over</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Woohoo, you`re time is {timer}sec.</Modal.Body>
+          <Modal.Body>Woohoo, you`re time is {formatTime(timer)}sec.</Modal.Body>
           <Modal.Body>Wrong clicks: {wrongClicks}</Modal.Body>
           <Modal.Footer>
             <Button variant="primary" onClick={handleClose}>

@@ -89,8 +89,8 @@ export const DoNotTouch: FC<DoNotTouchProps> = (props) => {
         }
 
         intervalID.current = setInterval(() => {
-            setTimer(timer + 1);
-        }, 1000);
+            setTimer(timer + 10);
+        }, 10);
 
         return () => {
             clearInterval(intervalID.current);

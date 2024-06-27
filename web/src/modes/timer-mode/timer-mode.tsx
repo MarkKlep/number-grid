@@ -102,8 +102,8 @@ export const TimerMode: FC<TimerModeProps> = (props) => {
 
     useEffect(() => {
         intervalID.current = setInterval(() => {
-            setTimer(timer => timer + 1);
-        }, 1000);
+            setTimer(timer => timer + 10);
+        }, 10);
 
         return () => {
             clearInterval(intervalID.current);
