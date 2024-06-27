@@ -39,6 +39,10 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
         setGridSize(gridSize);
     }
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        event.preventDefault();
+    }
+
     const handleSelectGameMode = (eventKey: string | null) => {
         if (eventKey) {
             setSelectedGameMode(eventKey);
@@ -55,9 +59,14 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
                             Grid Size:
                         </InputGroup.Text>
                         <Form.Control
-                            type="number" name="mapSize" onChange={handleSetMapSize} value={gridSize}
+                            type="number" 
+                            name="mapSize" 
+                            onChange={handleSetMapSize} 
+                            onKeyDown={handleKeyDown}
+                            value={gridSize}
                             aria-label="Grid Size"
                             aria-describedby="inputGroup-grid-size"
+                            className="w-100"
                         />
                     </InputGroup>
                 </Col>
