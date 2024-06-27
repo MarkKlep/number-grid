@@ -1,7 +1,10 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, useRef, FC } from 'react';
 import { matrixWithDangerousCells } from '../../utilities/matrix-processing';
 import { GridRenderer } from './grid-renderer';
 import { GridCellDoNotTouchMode } from '../../types/do-not-touch-mode';
+import { ModalWindow } from './modal-window';
+import { Panel } from './panel';
+import gridNumberClickSound from '../../assets/grid-number-click.mp3';
 
 type DoNotTouchProps = {
     gridSize: number
@@ -12,6 +15,9 @@ export const DoNotTouch: FC<DoNotTouchProps> = (props) => {
     const [gridCells, setGridCells] = useState<GridCellDoNotTouchMode[][]>(matrixWithDangerousCells(gridSize));
     const [wrongClicks, setWrongClicks] = useState<number>(0);
     const [deadClick, setDeadClick] = useState<boolean>(false);
+    const [timer, setTimer] = useState<number>(0);
+
+    const intervalID = useRef<any>(null);
 
     const gameIsOver = () => {
         return gridCells.flat().every(cell => cell.done || cell.failed);
@@ -43,12 +49,13 @@ export const DoNotTouch: FC<DoNotTouchProps> = (props) => {
     }
 
     const handlePlayerClick = (rowIndex: number, cellIndex: number) => {
-        // const audio = new Audio(gridNumberClickSound);
-        // audio.play();
+        const audio = new Audio(gridNumberClickSound);
+        audio.play();
 
         const clickedCell = gridCells[rowIndex][cellIndex];
 
         if(clickedCell.dangerous) setDeadClick(true);
+        if(deadClick) return;
         if(clickedCell.failed) return;
         if(ascOrderWrongClick(rowIndex, cellIndex)) return;
 
@@ -67,8 +74,33 @@ export const DoNotTouch: FC<DoNotTouchProps> = (props) => {
         );
     }
 
+    const handleNewGame = () => {
+        setGridCells(matrixWithDangerousCells(gridSize));
+        setTimer(0);
+        setWrongClicks(0);
+        setDeadClick(false);
+    }
+
+    useEffect(() => {
+        if(gameIsOver() || deadClick) {
+            clearInterval(intervalID.current);
+
+            return;
+        }
+
+        intervalID.current = setInterval(() => {
+            setTimer(timer + 1);
+        }, 1000);
+
+        return () => {
+            clearInterval(intervalID.current);
+        }
+    }, [timer, deadClick]);
+
     return (
         <div>
+            <Panel timer={timer} wrongClicks={wrongClicks} handleNewGame={handleNewGame} />
+
             {
                 gridCells.length > 0 && (
                     <GridRenderer gridCells={gridCells} handlePlayerClick={handlePlayerClick} />
@@ -77,7 +109,7 @@ export const DoNotTouch: FC<DoNotTouchProps> = (props) => {
 
             {
                 (gameIsOver() || deadClick) && (
-                    <h1>Game Over</h1>
+                    <ModalWindow deadClick={deadClick} wrongClicks={wrongClicks} timer={timer} />
                 )
             }
 
