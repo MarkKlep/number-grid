@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef, FC } from 'react'
 import { matrixNumbersGenerator } from '../../utilities/matrix-processing';
 import { GridRenderer } from './grid-renderer';
-import gridNumberClickSound from '../../assets/grid-number-click.mp3';
 import { GridCell } from '../../types/timer-mode';
 import { ModalWindow } from './modal-window';
 import { Panel } from './panel';
 import '../../styles/timer-mode-panel.scss';
+import gridNumberClickSound from '../../assets/grid-number-click.mp3';
+import gridNumberBadClickSound from '../../assets/grid-number-bad-click.mp3';
 
 type TimerModeProps = {
     gridSize: number,
@@ -67,11 +68,16 @@ export const TimerMode: FC<TimerModeProps> = (props) => {
     }
 
     const handlePlayerClick = (rowIndex: number, cellIndex: number) => {
+        if(gridCells[rowIndex][cellIndex].failed) return;
+        if(ascOrderWrongClick(rowIndex, cellIndex)) {
+            const audio = new Audio(gridNumberBadClickSound);
+            audio.play();
+
+            return;
+        }
+
         const audio = new Audio(gridNumberClickSound);
         audio.play();
-
-        if(gridCells[rowIndex][cellIndex].failed) return;
-        if(ascOrderWrongClick(rowIndex, cellIndex)) return;
 
         setGridCells(
             gridCells.map((row, rIndex) => {

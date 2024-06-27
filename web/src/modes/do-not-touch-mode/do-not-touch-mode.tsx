@@ -5,6 +5,7 @@ import { GridCellDoNotTouchMode } from '../../types/do-not-touch-mode';
 import { ModalWindow } from './modal-window';
 import { Panel } from './panel';
 import gridNumberClickSound from '../../assets/grid-number-click.mp3';
+import gridNumberBadClickSound from '../../assets/grid-number-bad-click.mp3';
 
 type DoNotTouchProps = {
     gridSize: number
@@ -49,15 +50,20 @@ export const DoNotTouch: FC<DoNotTouchProps> = (props) => {
     }
 
     const handlePlayerClick = (rowIndex: number, cellIndex: number) => {
-        const audio = new Audio(gridNumberClickSound);
-        audio.play();
-
         const clickedCell = gridCells[rowIndex][cellIndex];
 
         if(clickedCell.dangerous) setDeadClick(true);
         if(deadClick) return;
         if(clickedCell.failed) return;
-        if(ascOrderWrongClick(rowIndex, cellIndex)) return;
+        if(ascOrderWrongClick(rowIndex, cellIndex)) {
+            const audio = new Audio(gridNumberBadClickSound);
+            audio.play();
+            
+            return
+        }
+
+        const audio = new Audio(gridNumberClickSound);
+        audio.play();
 
         setGridCells(
             gridCells.map((row, rIndex) => {
