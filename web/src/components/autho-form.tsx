@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './../styles/form.scss'
 
-type FormObj = {
+type AuthoForm = {
     name: string,
     password: string
 }
@@ -11,7 +11,7 @@ const initFormObj = {
     password: ''
 }
 
-export const Form = () => {
+export const AuthoForm = () => {
 
     const [formObj, setFormObj] = useState(initFormObj);
 
@@ -42,7 +42,7 @@ export const Form = () => {
                     return (
                         <label key={index}>
                             {key.charAt(0).toUpperCase() + key.slice(1)}:
-                            <input type="text" name={key} onChange={handleFormObj} value={formObj[key as keyof FormObj]} />
+                            <input type="text" name={key} onChange={handleFormObj} value={formObj[key as keyof AuthoForm]} />
                         </label>
                     )
                 })

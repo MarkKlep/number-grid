@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { Form } from './components/form';
-import { RegForm } from './components/reg-form';
 import { SinglePlay } from './components/single-play';
+import { HomePage } from './components/home-page';
 import './App.css';
 
 function App() {
@@ -14,7 +13,7 @@ function App() {
   return (
     <div className="App">
       
-      <SinglePlay />
+      <HomePage />
      
     </div>
   );
