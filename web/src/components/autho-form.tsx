@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, FC } from 'react'
+import { useForm, SubmitHandler } from 'react-hook-form';
 import './../styles/form.scss'
 
 type AuthoForm = {
@@ -11,42 +12,29 @@ const initFormObj = {
     password: ''
 }
 
-export const AuthoForm = () => {
+export const AuthoForm: FC = () => {
+    const { register, handleSubmit } = useForm<AuthoForm>();
 
     const [formObj, setFormObj] = useState(initFormObj);
 
-    const handleFormObj = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFormObj({
-            ...formObj,
-            [event.target.name]: event.target.value
-        });
-    }
-
-    const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        
-        if(formObj.name === '' || formObj.password === '') {
-            alert('Please fill all fields');
-            return;
-        }
-    }
-
-    const handleResetForm = () => {
-        setFormObj(initFormObj);
+    const onSubmit: SubmitHandler<AuthoForm> = data => {
+        console.log(data);
     }
 
     return (
-        <form onSubmit={handleSubmitForm} onReset={handleResetForm} >
-            {
-                Object.keys(initFormObj).map((key, index) => {
-                    return (
-                        <label key={index}>
-                            {key.charAt(0).toUpperCase() + key.slice(1)}:
-                            <input type="text" name={key} onChange={handleFormObj} value={formObj[key as keyof AuthoForm]} />
-                        </label>
-                    )
-                })
-            }
+        <form onSubmit={handleSubmit(onSubmit)} >
+            
+            <div>
+                <label>
+                    Name
+                    <input type="text" />
+                </label>
+
+                <label>
+                    Password
+                    <input type="password" />
+                </label>
+            </div>
 
             <div>
                 <input type="reset" value="Reset" />
