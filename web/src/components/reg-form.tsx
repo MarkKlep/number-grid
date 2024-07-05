@@ -1,50 +1,58 @@
-import React, { useState } from 'react'
-import './../styles/form.scss'
+import React, { useState, FC } from 'react';
+import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
+import './../styles/form.scss';
 
-type FormObj = {
+type Inputs = {
     name: string,
     email: string,
     password: string,
     confirmPassword: string
 }
 
-const initFormObj: FormObj = {
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+const formFields: readonly (keyof Inputs)[] = ["name", "email", "password", "confirmPassword"];
+
+const initialFormState: Inputs = {
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
 }
 
-export const RegForm = () => {
+export const RegForm: FC = () => {
 
-    const [formObj, setFormObj] = useState(initFormObj);
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        defaultValues: initialFormState
+    });
 
-    const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        console.log(data);
     }
 
-    const handleResetForm = () => {
-        setFormObj(initFormObj);
-    }
-
-    const handleFormObj = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFormObj({
-            ...formObj,
-            [event.target.name]: event.target.value
-        });
+    const onError: SubmitErrorHandler<Inputs> = (errors) => {
+        console.log(errors);
     }
 
     return (
-        <form onSubmit={handleSubmitForm} onReset={handleResetForm}>
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
             {
-                Object.keys(initFormObj).map((key, index) => {
-                    return (
-                        <label key={index}>
-                            {key.charAt(0).toUpperCase() + key.slice(1)}:
-                            <input type="text" name={key} onChange={handleFormObj} value={formObj[key as keyof FormObj]} />
-                        </label>
-                    )
-                })
+                formFields.map((field, index) => (
+                    <label key={index}>
+                        {
+                            field.charAt(0).toUpperCase() + field.slice(1)
+                        }
+                        <input 
+                            type={field === "password" || field === "confirmPassword" ? "password" : "text"}
+                            {...register(field as keyof Inputs, { 
+                                required: true,
+                                minLength: field === "password" || field === "confirmPassword" ? 6 : 3,
+                                pattern: field === "email" ? /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/ : undefined,
+                                // validate: field === "confirmPassword" ? (value) => value === "password" : undefined
+
+                            })}
+                            aria-invalid={errors[field] ? "true" : "false"}
+                        />
+                    </label>
+                ))
             }
 
             <div>

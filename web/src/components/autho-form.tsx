@@ -7,7 +7,7 @@ type Inputs = {
     password: string
 }
 
-export const AuthoForm: FC<void> = () => {
+export const AuthoForm: FC = () => {
     const { register, handleSubmit } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = data => {
