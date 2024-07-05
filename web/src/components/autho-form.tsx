@@ -2,37 +2,35 @@ import React, { useState, FC } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import './../styles/form.scss'
 
-type AuthoForm = {
+type Inputs = {
     name: string,
     password: string
 }
 
-const initFormObj = {
-    name: '',
-    password: ''
-}
+export const AuthoForm: FC<void> = () => {
+    const { register, handleSubmit } = useForm<Inputs>();
 
-export const AuthoForm: FC = () => {
-    const { register, handleSubmit } = useForm<AuthoForm>();
-
-    const [formObj, setFormObj] = useState(initFormObj);
-
-    const onSubmit: SubmitHandler<AuthoForm> = data => {
+    const onSubmit: SubmitHandler<Inputs> = data => {
         console.log(data);
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} >
-            
+        <form onSubmit={handleSubmit(onSubmit)} >  
             <div>
                 <label>
                     Name
-                    <input type="text" />
+                    <input 
+                        type="text"
+                        {...register("name", { required: true })}
+                    />
                 </label>
 
                 <label>
                     Password
-                    <input type="password" />
+                    <input 
+                        type="password" 
+                        {...register("password", { required: true })}
+                    />
                 </label>
             </div>
 
