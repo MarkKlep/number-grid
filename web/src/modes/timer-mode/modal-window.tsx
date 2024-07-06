@@ -1,6 +1,5 @@
 import React, { useState, FC } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import { formatTime } from '../../utilities/time-formater';
 
 type ModalWindowProps = {
@@ -16,19 +15,17 @@ export const ModalWindow: FC<ModalWindowProps> = (props) => {
     const handleClose = () => setShow(false);
   
     return (
-      <>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Game is over</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Woohoo, you`re time is {formatTime(timer)}sec.</Modal.Body>
-          <Modal.Body>Wrong clicks: {wrongClicks}</Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={handleClose}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </>
+        <Dialog open={show} onClose={handleClose}>
+            <DialogTitle>Game is over</DialogTitle>
+            <DialogContent>
+                <Typography>Woohoo, your time is {formatTime(timer)} sec.</Typography>
+                <Typography>Wrong clicks: {wrongClicks}</Typography>
+            </DialogContent>
+            <DialogActions>
+                <Button variant="contained" color="primary" onClick={handleClose}>
+                    Close
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 }

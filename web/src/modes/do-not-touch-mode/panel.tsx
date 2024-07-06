@@ -1,9 +1,5 @@
 import React, { FC } from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Badge from 'react-bootstrap/Badge';
-import Button from 'react-bootstrap/Button';
+import { Container, Grid, Box, Badge, Button } from '@mui/material';
 import { formatTime } from '../../utilities/time-formater';
 
 type PanelProps = {
@@ -17,28 +13,39 @@ export const Panel: FC<PanelProps> = (props) => {
 
     return (
         <Container className='timer-mode-panel'>
-            <Row>
-                <Col>
-                    <Badge bg="warning" text="dark" className="timer-badge">
-                        Timer: {formatTime(timer)} sec.
-                    </Badge>
-                </Col>
-                <Col>
-                    <Badge bg="danger" className="timer-badge">
-                        Oops... {wrongClicks} clicks
-                    </Badge>
-                </Col>
-                <Col>
-                    <Button 
-                        variant="primary" 
-                        className="start-button"
-                        style={{ fontWeight: 'bold' }}
-                        onClick={handleNewGame}    
-                    >
-                        Start New Game
-                    </Button>
-                </Col>
-            </Row>
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                    <Box display="flex" justifyContent="center" alignItems="center">
+                        <Badge 
+                            badgeContent={`Timer: ${formatTime(timer)} sec.`} 
+                            color="warning"
+                            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                        />
+                    </Box>
+                </Grid>
+                <Grid item xs={4}>
+                    <Box display="flex" justifyContent="center" alignItems="center">
+                        <Badge 
+                            badgeContent={`Oops... ${wrongClicks} clicks`} 
+                            color="error"
+                            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                        />
+                    </Box>
+                </Grid>
+                <Grid item xs={4}>
+                    <Box display="flex" justifyContent="center" alignItems="center">
+                        <Button 
+                            variant="contained" 
+                            color="primary" 
+                            className="start-button"
+                            style={{ fontWeight: 'bold' }}
+                            onClick={handleNewGame}    
+                        >
+                            Start New Game
+                        </Button>
+                    </Box>
+                </Grid>
+            </Grid>
         </Container>
     );
 }

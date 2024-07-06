@@ -46,8 +46,6 @@ export const RegForm: FC = () => {
                                 required: true,
                                 minLength: field === "password" || field === "confirmPassword" ? 6 : 3,
                                 pattern: field === "email" ? /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/ : undefined,
-                                // validate: field === "confirmPassword" ? (value) => value === "password" : undefined
-
                             })}
                             aria-invalid={errors[field] ? "true" : "false"}
                         />

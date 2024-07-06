@@ -44,58 +44,52 @@ form {
         }
     }
 
-    div {
-        margin-top: 20px;
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
+    input[type="reset"] {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        background-color: $reset-background;
+        color: $submit-text-color;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
 
-        input[type="reset"] {
-            display: block;
-            width: 100%;
-            padding: 10px 0;
-            background-color: $reset-background;
-            color: $submit-text-color;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: background-color 0.3s ease;
-
-            &:hover {
-                background-color: $reset-hover-background;
-            }
-
-            &:focus {
-                outline: none;
-            }
+        &:hover {
+            background-color: $reset-hover-background;
         }
 
-        input[type="submit"] {
-            display: block;
-            width: 100%;
-            padding: 10px 0;
-            background-color: $submit-background;
-            color: $submit-text-color;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: background-color 0.3s ease;
-
-            &:hover {
-                background-color: $submit-hover-background;
-            }
-
-            &:focus {
-                outline: none;
-            }
+        &:focus {
+            outline: none;
         }
     }
+
+    input[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        background-color: $submit-background;
+        color: $submit-text-color;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: $submit-hover-background;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
 }
 
 span {

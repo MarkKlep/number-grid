@@ -1,13 +1,6 @@
 import React, { FC } from 'react';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Form from 'react-bootstrap/Form';
-import '../styles/panel.scss';
+import { Stack, InputLabel, MenuItem, FormControl, Select, TextField, Button } from '@mui/material';
+import "../styles/game-panel.scss";
 
 type GamePanelProps = {
     gridSize: number,
@@ -27,15 +20,6 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
     const handleSetMapSize = (event: React.ChangeEvent<HTMLInputElement>) => {
         const gridSize = parseInt(event.target.value);
 
-        if (gridSize < 2) {
-            alert('Grid size must be greater than 1');
-            return;
-        }
-        else if (gridSize > 10) {
-            alert('Grid size must be less than 10');
-            return;
-        }
-
         setGridSize(gridSize);
     }
 
@@ -43,51 +27,53 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
         event.preventDefault();
     }
 
-    const handleSelectGameMode = (eventKey: string | null) => {
-        if (eventKey) {
-            setSelectedGameMode(eventKey);
-            setStartNewGame(false);
-        }
+    const handleSelectGameMode = (event: any) => {
+        const gameMode = event.target.value as string;
+        setSelectedGameMode(gameMode);
+        setStartNewGame(false);
     }
 
     return (
-        <Container fluid className="game-panel-container">
-            <Row>
-                <Col>
-                    <InputGroup className="mb-3">
-                        <InputGroup.Text id="inputGroup-grid-size">
-                            Grid Size:
-                        </InputGroup.Text>
-                        <Form.Control
-                            type="number" 
-                            name="mapSize" 
-                            onChange={handleSetMapSize} 
-                            onKeyDown={handleKeyDown}
-                            value={gridSize}
-                            aria-label="Grid Size"
-                            aria-describedby="inputGroup-grid-size"
-                            className="w-100"
-                        />
-                    </InputGroup>
-                </Col>
-                <Col>
-                    <DropdownButton id="dropdown-basic-button" title={selectedGameMode === "" ? "Select Game Mode" : selectedGameMode} onSelect={handleSelectGameMode} className="dropdown-button">
-                        {gameModes.map((gameMode, index) => {
-                            return <Dropdown.Item key={index} eventKey={gameMode}>{gameMode}</Dropdown.Item>
-                        })}
-                    </DropdownButton>
-                </Col>
-                <Col>
-                    <Button 
-                        variant={startNewGame ? 'danger' : 'success'}
-                        onClick={handleStartNewGame} 
-                        className="start-button">
-                        {
-                            startNewGame ? 'Quite' : 'Start'
-                        }
-                    </Button>
-                </Col>
-            </Row>
-        </Container>
+        <Stack direction="row" spacing={2} className="game-panel-container">
+            <FormControl variant="outlined">
+                <TextField
+                    sx={{ width: '200px' }}
+                    type="number"
+                    onChange={handleSetMapSize}
+                    onKeyDown={handleKeyDown}
+                    value={gridSize}
+                    label="Grid Size"
+                    defaultValue={2}
+                    error={gridSize < 2}
+                />
+            </FormControl>
+
+            <FormControl variant="outlined">
+                <InputLabel id="select-game-mode-label">Select Game Mode</InputLabel>
+                <Select
+                    sx={{ width: '200px'}}
+                    labelId="select-game-mode-label"
+                    id="select-game-mode"
+                    value={selectedGameMode}
+                    onChange={handleSelectGameMode}
+                    label="Select Game Mode"
+                >
+                    {gameModes.map((gameMode, index) => (
+                        <MenuItem key={index} value={gameMode}>
+                            {gameMode}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+            <Button 
+                sx={{ width: '120px' }}
+                onClick={handleStartNewGame} 
+                variant={startNewGame ? "outlined" : "contained"}
+                color={startNewGame ? 'error' : 'primary'}
+            >
+                {startNewGame ? 'Quit' : 'Start'}
+            </Button>
+        </Stack>
     )
 }
