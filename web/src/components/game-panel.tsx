@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Stack, InputLabel, MenuItem, FormControl, Select, TextField, Button } from '@mui/material';
 import "../styles/game-panel.scss";
-import { error } from 'console';
 
 type GamePanelProps = {
     gridSize: number,
@@ -20,6 +19,8 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
 
     const handleSetMapSize = (event: React.ChangeEvent<HTMLInputElement>) => {
         const gridSize = parseInt(event.target.value);
+
+        if(gridSize < 0) return;
 
         setGridSize(gridSize);
     }
@@ -41,18 +42,26 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
     return (
         <Stack direction="row" spacing={2} className="game-panel-container">
             <FormControl variant="outlined">
-                <TextField
-                    sx={{ width: '200px' }}
-                    variant="filled"
-                    type="number"
-                    onChange={handleSetMapSize}
-                    onKeyDown={handleKeyDown}
-                    value={gridSize}
-                    label="Grid Size"
-                    defaultValue={2}
-                    error={toggleErrStateGridSizeField(gridSize)}
-                    helperText={toggleErrStateGridSizeField(gridSize) ? "Grid size must be between 2 and 10" : ""}
-                />
+                {
+                    (() => {
+                        const isError = toggleErrStateGridSizeField(gridSize);
+
+                        return (
+                            <TextField
+                                sx={{ width: '200px' }}
+                                variant="filled"
+                                type="number"
+                                onChange={handleSetMapSize}
+                                onKeyDown={handleKeyDown}
+                                value={gridSize}
+                                label="Grid Size"
+                                defaultValue={2}
+                                error={isError}
+                                helperText={isError ? "Grid size must be between 2 and 10" : ""}
+                            />
+                        )
+                    })()
+                }
             </FormControl>
 
             <FormControl variant="outlined">
