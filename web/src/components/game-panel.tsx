@@ -65,25 +65,25 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
             </FormControl>
 
             <FormControl variant="outlined">
-                <InputLabel id="select-game-mode-label">Select Game Mode</InputLabel>
-                <Select
+                <TextField
+                    variant='outlined'
+                    select
+                    label="Game Mode"
+                    helperText={selectedGameMode ? "" : "Please select a game mode"}
                     sx={{ width: '200px'}}
-                    labelId="select-game-mode-label"
-                    id="select-game-mode"
                     value={selectedGameMode}
                     onChange={handleSelectGameMode}
-                    label="Select Game Mode"
                 >
                     {gameModes.map((gameMode, index) => (
                         <MenuItem key={index} value={gameMode}>
                             {gameMode}
                         </MenuItem>
                     ))}
-                </Select>
+                </TextField>
             </FormControl>
 
             <Button 
-                sx={{ width: '120px' }}
+                sx={{ width: '120px', height: '56px'}}
                 onClick={handleStartNewGame} 
                 variant={startNewGame ? "outlined" : "contained"}
                 color={startNewGame ? 'error' : 'primary'}
