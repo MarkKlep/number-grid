@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Stack, MenuItem, TextField, Button, InputAdornment } from '@mui/material';
+import { Box, Stack, MenuItem, TextField, Button, InputAdornment, Divider } from '@mui/material';
 import "../styles/game-panel.scss";
 
 type GamePanelProps = {
@@ -40,55 +40,68 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
     }
 
     return (
-        <Stack direction="row" spacing={2} className="game-panel-container">
-                {
-                    (() => {
-                        const isError = toggleErrStateGridSizeField(gridSize);
-
-                        return (
-                            <TextField
-                                sx={{ width: '200px' }}
-                                variant="filled"
-                                type="number"
-                                onChange={handleSetMapSize}
-                                onKeyDown={handleKeyDown}
-                                value={gridSize}
-                                label="Grid Size"
-                                defaultValue={2}
-                                error={isError}
-                                helperText={isError ? "Grid size must be between 2 and 10" : ""}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="start">{`${gridSize * gridSize} cells`}</InputAdornment>
-                                }}
-                            />
-                        )
-                    })()
-                }
-
-                <TextField
-                    variant='outlined'
-                    select
-                    label="Game Mode"
-                    helperText={selectedGameMode ? "" : "Please select a game mode"}
-                    sx={{ width: '200px'}}
-                    value={selectedGameMode}
-                    onChange={handleSelectGameMode}
-                >
-                    {gameModes.map((gameMode, index) => (
-                        <MenuItem key={index} value={gameMode}>
-                            {gameMode}
-                        </MenuItem>
-                    ))}
-                </TextField>
-
-            <Button 
-                sx={{ width: '120px', height: '56px'}}
-                onClick={handleStartNewGame} 
-                variant={startNewGame ? "outlined" : "contained"}
-                color={startNewGame ? 'error' : 'primary'}
+        <Box padding={2} sx={{ width: "100%", background: '#f0f0f0', borderRadius: 1, boxShadow: 1 }} >
+            <Stack 
+                height={100}
+                direction="row" 
+                spacing={5} 
+                alignItems={'center'}
+                divider={
+                    <Divider
+                        orientation="vertical"
+                        sx={{ height: '80%', background: '#f5f5f5'}}
+                    />
+                }    
             >
-                {startNewGame ? 'Quit' : 'Start'}
-            </Button>
-        </Stack>
+                    {
+                        (() => {
+                            const isError = toggleErrStateGridSizeField(gridSize);
+
+                            return (
+                                <TextField
+                                    sx={{ width: '200px' }}
+                                    variant="filled"
+                                    type="number"
+                                    onChange={handleSetMapSize}
+                                    onKeyDown={handleKeyDown}
+                                    value={gridSize}
+                                    label="Grid Size"
+                                    defaultValue={2}
+                                    error={isError}
+                                    helperText={isError ? "Grid size must be between 2 and 10" : ""}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="start">{`${gridSize * gridSize} cells`}</InputAdornment>
+                                    }}
+                                />
+                            )
+                        })()
+                    }
+
+                    <TextField
+                        variant='outlined'
+                        select
+                        label="Game Mode"
+                        helperText={selectedGameMode ? "" : "Please select a game mode"}
+                        sx={{ width: '200px'}}
+                        value={selectedGameMode}
+                        onChange={handleSelectGameMode}
+                    >
+                        {gameModes.map((gameMode, index) => (
+                            <MenuItem key={index} value={gameMode}>
+                                {gameMode}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+
+                <Button 
+                    sx={{ width: '120px', height: '56px'}}
+                    onClick={handleStartNewGame} 
+                    variant={startNewGame ? "outlined" : "contained"}
+                    color={startNewGame ? 'error' : 'primary'}
+                >
+                    {startNewGame ? 'Quit' : 'Start'}
+                </Button>
+            </Stack>
+        </Box>
     )
 }
