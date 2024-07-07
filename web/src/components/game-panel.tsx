@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Box, Stack, MenuItem, TextField, Button, InputAdornment, Divider } from '@mui/material';
 import "../styles/game-panel.scss";
+import { set } from 'react-hook-form';
 
 type GamePanelProps = {
     gridSize: number,
@@ -10,12 +11,27 @@ type GamePanelProps = {
     setStartNewGame: (startNewGame: boolean) => void,
     setSelectedGameMode: (gameMode: string) => void,
     setGridSize: (gridSize: number) => void,
-    handleStartNewGame: () => void
 }
 
 export const GamePanel: FC<GamePanelProps> = (props) => {
 
-    const { gridSize, setGridSize, selectedGameMode, handleStartNewGame, setSelectedGameMode, gameModes, startNewGame, setStartNewGame } = props;
+    const { gridSize, setGridSize, selectedGameMode, setSelectedGameMode, gameModes, startNewGame, setStartNewGame } = props;
+
+    const [selectFieldError, setSelectFieldError] = useState<boolean>(false);
+
+    const handleStartNewGame = () => {
+        setStartNewGame(!startNewGame);
+
+        if(!selectedGameMode) {
+            setSelectFieldError(true);
+        }
+    }
+
+    useEffect(() => {
+        if(selectedGameMode) {
+            setSelectFieldError(false);
+        }
+    }, [selectedGameMode])
 
     const handleSetMapSize = (event: React.ChangeEvent<HTMLInputElement>) => {
         const gridSize = parseInt(event.target.value);
@@ -85,6 +101,7 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
                         sx={{ width: '200px'}}
                         value={selectedGameMode}
                         onChange={handleSelectGameMode}
+                        error={selectFieldError}
                     >
                         {gameModes.map((gameMode, index) => (
                             <MenuItem key={index} value={gameMode}>

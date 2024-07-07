@@ -10,10 +10,6 @@ export const SinglePlay = () => {
     const [gridSize, setGridSize] = useState(2);
     const [startNewGame, setStartNewGame] = useState<boolean>(false);
 
-    const handleStartNewGame = () => {
-        setStartNewGame(!startNewGame);
-    }
-
     const renderGameMode = () => {
         if(!startNewGame) return null;
 
@@ -36,7 +32,6 @@ export const SinglePlay = () => {
                 startNewGame={startNewGame}
                 setGridSize={setGridSize} 
                 setStartNewGame={setStartNewGame}
-                handleStartNewGame={handleStartNewGame} 
                 setSelectedGameMode={setSelectedGameMode} 
                 gameModes={gameModes} 
             />
