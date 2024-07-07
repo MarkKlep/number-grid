@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Stack, InputLabel, MenuItem, FormControl, Select, TextField, Button, InputAdornment } from '@mui/material';
+import { Stack, MenuItem, TextField, Button, InputAdornment } from '@mui/material';
 import "../styles/game-panel.scss";
 
 type GamePanelProps = {
