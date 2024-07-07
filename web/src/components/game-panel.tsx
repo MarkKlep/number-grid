@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Stack, InputLabel, MenuItem, FormControl, Select, TextField, Button } from '@mui/material';
+import { Stack, InputLabel, MenuItem, FormControl, Select, TextField, Button, InputAdornment } from '@mui/material';
 import "../styles/game-panel.scss";
 
 type GamePanelProps = {
@@ -20,7 +20,7 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
     const handleSetMapSize = (event: React.ChangeEvent<HTMLInputElement>) => {
         const gridSize = parseInt(event.target.value);
 
-        if(gridSize < 0) return;
+        if(gridSize < 0 || gridSize> 15) return;
 
         setGridSize(gridSize);
     }
@@ -41,7 +41,6 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
 
     return (
         <Stack direction="row" spacing={2} className="game-panel-container">
-            <FormControl variant="outlined">
                 {
                     (() => {
                         const isError = toggleErrStateGridSizeField(gridSize);
@@ -58,13 +57,14 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
                                 defaultValue={2}
                                 error={isError}
                                 helperText={isError ? "Grid size must be between 2 and 10" : ""}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="start">{`${gridSize * gridSize} cells`}</InputAdornment>
+                                }}
                             />
                         )
                     })()
                 }
-            </FormControl>
 
-            <FormControl variant="outlined">
                 <TextField
                     variant='outlined'
                     select
@@ -80,7 +80,6 @@ export const GamePanel: FC<GamePanelProps> = (props) => {
                         </MenuItem>
                     ))}
                 </TextField>
-            </FormControl>
 
             <Button 
                 sx={{ width: '120px', height: '56px'}}
