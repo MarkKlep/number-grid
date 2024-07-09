@@ -52,14 +52,7 @@ export const AuthoForm: FC = () => {
                 ))
             }
 
-            <Button 
-                sx={{width: '100%', mt: '1rem'}}
-                type="submit"
-                variant='contained'
-                color="primary"
-            >
-                Submit
-            </Button>
+            <input type="submit" value="Submit" />
 
             { isSubmitSuccessful && 
             (
