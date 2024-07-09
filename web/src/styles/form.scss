@@ -45,6 +45,7 @@ form {
     }
 
     input[type="reset"] {
+        margin: 0.5rem auto;
         display: block;
         width: 100%;
         padding: 10px 0;
@@ -69,6 +70,7 @@ form {
 
     input[type="submit"] {
         display: block;
+        margin: 0.5rem auto;
         width: 100%;
         padding: 10px 0;
         background-color: $submit-background;
@@ -89,7 +91,6 @@ form {
             outline: none;
         }
     }
-
 }
 
 span {

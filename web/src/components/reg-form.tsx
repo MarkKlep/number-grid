@@ -1,6 +1,7 @@
-import React, { useState, FC, Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 import { Alert } from '@mui/material';
-import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { regSchema } from '../utilities/validationSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import './../styles/form.scss';
@@ -12,32 +13,32 @@ type Inputs = {
     confirmPassword: string
 }
 
+const initialValues: Inputs = {
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+}
+
 const formFields: readonly (keyof Inputs)[] = ["name", "email", "password", "confirmPassword"];
 
-const schema = yup.object({
-    name: yup.string().required().min(3),
-    email: yup.string().required().matches(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/),
-    password: yup.string().required().matches(/^[A-Za-z](?=.*\d)(?=.*[!@#$%^&*;])[A-Za-z\d!@#$%^&*;]{8,16}$/),
-    confirmPassword: yup.string().oneOf([yup.ref("password")])
-});
-type FormData = yup.InferType<typeof schema>;
+type FormData = yup.InferType<typeof regSchema>;
 
 export const RegForm: FC = () => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
-        resolver: yupResolver(schema)
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
+        resolver: yupResolver(regSchema),
+        mode: "onBlur",
+        defaultValues: initialValues,
     });
 
     const onSubmit: SubmitHandler<FormData> = (data) => {
         console.log(data);
-    }
-
-    const onError: SubmitErrorHandler<FormData> = (errors) => {
-        console.log(errors);
+        reset(initialValues);
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             {
                 formFields.map((field, index) => (
                     <Fragment key={index} >
@@ -51,17 +52,12 @@ export const RegForm: FC = () => {
                                 aria-invalid={errors[field] ? "true" : "false"}
                             />
                         </label>
-                        <Alert severity="error" sx={{ display: errors[field] ? "block" : "none" }}>
-                            {errors[field]?.message}
-                        </Alert>
+                        { errors[field] && <Alert severity="error">{errors[field]?.message}</Alert> }
                     </Fragment>
                 ))
             }
 
-            <div>
-                <input type="reset" value="Reset" />
-                <input type="submit" value="Submit" />
-            </div>
+            <input type="submit" value="Submit" />
         </form>
     )
 }

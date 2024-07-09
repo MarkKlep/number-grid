@@ -1,6 +1,9 @@
-import React, { useState, FC } from 'react'
+import React, { FC, Fragment } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { authoSchema } from '../utilities/validationSchema';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Alert } from '@mui/material';
 import './../styles/form.scss'
 
 type Inputs = {
@@ -8,37 +11,46 @@ type Inputs = {
     password: string
 }
 
+const formFields: readonly (keyof Inputs)[] = ["name", "password"];
+
+const initialValues: Inputs = {
+    name: "",
+    password: ""
+}
+
 export const AuthoForm: FC = () => {
-    const { register, handleSubmit } = useForm<Inputs>();
+    const { register, handleSubmit, formState: { errors, isSubmitSuccessful }, reset } = useForm<Inputs>({
+        resolver: yupResolver(authoSchema),
+        defaultValues: initialValues,
+        mode: "onBlur",
+    });
 
     const navigate = useNavigate()
 
     const onSubmit: SubmitHandler<Inputs> = data => {
-        navigate('/single-play');
-        console.log(data);
+        //navigate('/single-play');
+        
+        reset(initialValues);
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} >  
-            <label>
-                Name
-                <input 
-                    type="text"
-                    {...register("name", { required: true })}
-                />
-            </label>
+            {
+                formFields.map((field, index) => (
+                    <Fragment key={index}>
+                        <label>
+                            {
+                                field.charAt(0).toUpperCase() + field.slice(1)
+                            }
+                            <input type={field === 'password' ? 'password' : 'text'} {...register(field)} />
+                        </label>
+                        { errors[field] && <Alert severity="error">{errors[field]?.message}</Alert> }
+                    </Fragment>
+                ))
+            }
 
-            <label>
-                Password
-                <input 
-                    type="password" 
-                    {...register("password", { required: true })}
-                />
-            </label>
-
-        
-            <input type="reset" value="Reset" />
             <input type="submit" value="Submit" />
+            { isSubmitSuccessful && <Alert severity="success">Login successful</Alert>}
         </form>
     )
 }
