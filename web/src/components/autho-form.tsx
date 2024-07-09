@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { authoSchema } from '../utilities/validationSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Alert } from '@mui/material';
+import { Alert, Box, Button } from '@mui/material';
 import './../styles/form.scss'
 
 type Inputs = {
@@ -28,9 +28,12 @@ export const AuthoForm: FC = () => {
     const navigate = useNavigate()
 
     const onSubmit: SubmitHandler<Inputs> = data => {
-        //navigate('/single-play');
         
         reset(initialValues);
+    }
+
+    const handleEnter = () => {
+        navigate('/dashboard');
     }
 
     return (
@@ -49,8 +52,33 @@ export const AuthoForm: FC = () => {
                 ))
             }
 
-            <input type="submit" value="Submit" />
-            { isSubmitSuccessful && <Alert severity="success">Login successful</Alert>}
+            <Button 
+                sx={{width: '100%', mt: '1rem'}}
+                type="submit"
+                variant='contained'
+                color="primary"
+            >
+                Submit
+            </Button>
+
+            { isSubmitSuccessful && 
+            (
+                <Box
+                    justifyContent={"center"}
+                >
+                    <Alert sx={{m: '1.5rem'}} severity="success">
+                        Login successful
+                    </Alert>
+
+                    <Button
+                        onClick={handleEnter}
+                        variant='contained'
+                        color='secondary'
+                    >
+                        Enter
+                    </Button>
+                </Box>
+            )}
         </form>
     )
 }
