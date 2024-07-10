@@ -4,6 +4,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { regSchema } from '../utilities/validationSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import axios from 'axios';
+import { API } from '../constants';
 import './../styles/form.scss';
 
 type Inputs = {
@@ -34,6 +36,15 @@ export const RegForm: FC = () => {
 
     const onSubmit: SubmitHandler<FormData> = (data) => {
         console.log(data);
+
+        axios.post(`${API}reg-user`, data)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
         reset(initialValues);
     }
 
