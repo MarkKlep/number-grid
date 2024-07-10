@@ -2,7 +2,7 @@ import * as yup from 'yup';
 
 export const regSchema = yup.object({
     name: yup.string().required().min(4),
-    email: yup.string().required().matches(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/, "Invalid email"),
+    email: yup.string().required().email("Invalid email"),
     password: yup.string().required()
     .min(8, "Password must be at least 8 characters").max(20, "Password must be at most 20 characters")
     .test('has-letter', 'Password must contain at least one letter', value => /[a-z]/.test(value))

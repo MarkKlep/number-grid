@@ -52,7 +52,9 @@ export const AuthoForm: FC = () => {
                 ))
             }
 
-            <input type="submit" value="Submit" />
+            <button type="submit" className='btn-submit' >
+                Submit
+            </button>
 
             { isSubmitSuccessful && 
             (

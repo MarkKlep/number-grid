@@ -1,51 +1,52 @@
-import React, { FC, Fragment } from 'react';
+import React, { useState, FC, Fragment } from 'react';
 import { Alert } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { regSchema } from '../utilities/validationSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
-import { API } from '../constants';
+import { API_URL } from '../constants';
 import './../styles/form.scss';
 
-type Inputs = {
-    name: string,
-    email: string,
-    password: string,
-    confirmPassword: string
-}
+type FormData = yup.InferType<typeof regSchema>;
 
-const initialValues: Inputs = {
+const initialValues: FormData = {
     name: "",
     email: "",
     password: "",
     confirmPassword: ""
 }
 
-const formFields: readonly (keyof Inputs)[] = ["name", "email", "password", "confirmPassword"];
-
-type FormData = yup.InferType<typeof regSchema>;
+const formFields: readonly (keyof FormData)[] = ["name", "email", "password", "confirmPassword"];
 
 export const RegForm: FC = () => {
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
+    const [fillingFormLine, setFillingFormLine] = useState<number>(0);
+    const [registrationStatus, setRegistrationStatus] = useState<{message: string, isError: boolean} | null>(null);
+
+    const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<FormData>({
         resolver: yupResolver(regSchema),
         mode: "onBlur",
         defaultValues: initialValues,
     });
 
-    const onSubmit: SubmitHandler<FormData> = (data) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<FormData> = async (data) => {
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            const response = await axios.post(`${API_URL}/reg-user`, data);
+            
+            if (response.status === 201 && response.data) {
+                setRegistrationStatus({message: response.data, isError: false});
+            }
+            else {
+                new Error("Registration failed");
+            }
 
-        axios.post(`${API}reg-user`, data)
-            .then(res => {
-                console.log(res);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        } catch (error) {
+            setRegistrationStatus({message: String(error), isError: true});
+        }
 
-        reset(initialValues);
+        //reset(initialValues);
     }
 
     return (
@@ -59,7 +60,7 @@ export const RegForm: FC = () => {
                             }
                             <input 
                                 type={field === "password" || field === "confirmPassword" ? "password" : "text"}
-                                {...register(field as keyof Inputs)}
+                                {...register(field as keyof FormData)}
                                 aria-invalid={errors[field] ? "true" : "false"}
                             />
                         </label>
@@ -68,7 +69,18 @@ export const RegForm: FC = () => {
                 ))
             }
 
-            <input type="submit" value="Submit" />
+            <div className="progress-bar">
+                <div className="progress" style={{ width: `${fillingFormLine}%` }}></div>
+            </div>
+
+            <button disabled={isSubmitting} type="submit" className={isSubmitting ? 'btn-disabled' : 'btn-submit'} >
+                {isSubmitting ? "Loading" : "Submit"}
+            </button>
+            {
+                registrationStatus && <Alert severity={registrationStatus.isError ? "error" : "success"}>
+                    {registrationStatus.message}
+                </Alert>
+            }
         </form>
     )
 }

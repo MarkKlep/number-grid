@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 const PORT = process.env.PORT || 3001;
+
 const app = express();
 
 app.use(express.json());
@@ -12,7 +13,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/reg-user', (req, res) => {
-  console.log('User registered');
+  console.log(req.body);
+  res.status(201).send('User registered successfully');
 });
 
 app.listen(PORT, () => {
