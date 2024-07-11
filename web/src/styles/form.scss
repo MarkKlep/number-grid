@@ -41,6 +41,10 @@ form {
                 border-color: $input-focus-border;
                 outline: none;
             }
+
+            &::placeholder {
+                color: #999;
+            }
         }
     }
 
@@ -90,6 +94,7 @@ form {
             border: 1px solid orange;
             background: transparent;
         }
+
         &:active::before {
             background: none;
         }

@@ -24,7 +24,7 @@ export const RegForm: FC = () => {
     const [fillingFormLine, setFillingFormLine] = useState<number>(0);
     const [registrationStatus, setRegistrationStatus] = useState<{message: string, isError: boolean} | null>(null);
 
-    const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<FormData>({
+    const { register, handleSubmit, getValues, formState: { errors, isSubmitting }, reset } = useForm<FormData>({
         resolver: yupResolver(regSchema),
         mode: "onBlur",
         defaultValues: initialValues,
@@ -46,7 +46,7 @@ export const RegForm: FC = () => {
             setRegistrationStatus({message: String(error), isError: true});
         }
 
-        //reset(initialValues);
+        reset(initialValues);
     }
 
     return (
@@ -61,10 +61,11 @@ export const RegForm: FC = () => {
                             <input 
                                 type={field === "password" || field === "confirmPassword" ? "password" : "text"}
                                 {...register(field as keyof FormData)}
+                                placeholder={field + "..."}
                                 aria-invalid={errors[field] ? "true" : "false"}
                             />
                         </label>
-                        { errors[field] && <Alert severity="error">{errors[field]?.message}</Alert> }
+                        { (errors[field] && getValues(field) ) && <Alert severity="error">{errors[field]?.message}</Alert> }
                     </Fragment>
                 ))
             }
