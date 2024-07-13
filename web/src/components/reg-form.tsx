@@ -24,11 +24,15 @@ export const RegForm: FC = () => {
     const [fillingFormLine, setFillingFormLine] = useState<number>(0);
     const [registrationStatus, setRegistrationStatus] = useState<{message: string, isError: boolean} | null>(null);
 
-    const { register, handleSubmit, getValues, formState: { errors, isSubmitting }, reset } = useForm<FormData>({
+    const { register, handleSubmit, getValues, watch, formState: { errors, isSubmitting }, reset } = useForm<FormData>({
         resolver: yupResolver(regSchema),
         mode: "onBlur",
         defaultValues: initialValues,
     });
+
+    const watchFormFields = watch();
+
+
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         try {
