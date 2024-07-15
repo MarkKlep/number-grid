@@ -26,7 +26,7 @@ export const RegForm: FC = () => {
 
     const { register, handleSubmit, getValues, watch, formState: { errors, isSubmitting }, reset } = useForm<FormData>({
         resolver: yupResolver(regSchema),
-        mode: "onBlur",
+        mode: "onChange",
         defaultValues: initialValues,
     });
 
