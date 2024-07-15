@@ -24,7 +24,7 @@ export const RegForm: FC = () => {
     const [fillingFormLine, setFillingFormLine] = useState<number>(0);
     const [registrationStatus, setRegistrationStatus] = useState<{message: string, isError: boolean} | null>(null);
 
-    const { register, handleSubmit, getValues, watch, formState: { errors, isSubmitting }, reset, getFieldState } = useForm<FormData>({
+    const { register, handleSubmit, getValues, watch, formState: { errors, isSubmitting }, reset } = useForm<FormData>({
         resolver: yupResolver(regSchema),
         mode: "onBlur",
         defaultValues: initialValues,
@@ -33,7 +33,7 @@ export const RegForm: FC = () => {
     const watchFormFields = watch();
 
     useEffect(() => {
-        const doneFields = Object.entries(watchFormFields).filter(([key, value]) => value.trim().length && !getFieldState(key as keyof FormData).error).length;
+        const doneFields = Object.entries(watchFormFields).filter(([field, value]) => value.trim().length && !errors[field as keyof FormData]).length;
         setFillingFormLine((doneFields / formFields.length) * 100);
     }, [watchFormFields]);
 
