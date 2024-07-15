@@ -1,4 +1,4 @@
-import React, { useState, FC, Fragment } from 'react';
+import React, { useState, useEffect, FC, Fragment } from 'react';
 import { Alert } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { regSchema } from '../utilities/validationSchema';
@@ -24,7 +24,7 @@ export const RegForm: FC = () => {
     const [fillingFormLine, setFillingFormLine] = useState<number>(0);
     const [registrationStatus, setRegistrationStatus] = useState<{message: string, isError: boolean} | null>(null);
 
-    const { register, handleSubmit, getValues, watch, formState: { errors, isSubmitting }, reset } = useForm<FormData>({
+    const { register, handleSubmit, getValues, watch, formState: { errors, isSubmitting }, reset, getFieldState } = useForm<FormData>({
         resolver: yupResolver(regSchema),
         mode: "onBlur",
         defaultValues: initialValues,
@@ -32,7 +32,10 @@ export const RegForm: FC = () => {
 
     const watchFormFields = watch();
 
-
+    useEffect(() => {
+        const doneFields = Object.entries(watchFormFields).filter(([key, value]) => value.trim().length && !getFieldState(key as keyof FormData).error).length;
+        setFillingFormLine((doneFields / formFields.length) * 100);
+    }, [watchFormFields]);
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         try {
