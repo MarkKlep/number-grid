@@ -1,11 +1,13 @@
 import React, { useState, useEffect, FC, Fragment } from 'react';
-import { Alert } from '@mui/material';
+import { Alert, InputAdornment, TextField } from '@mui/material';
+import { AccountCircle } from '@mui/icons-material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { regSchema } from '../utilities/validationSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
 import { API_URL } from '../constants';
+import { styled } from '@mui/material/styles';
 import './../styles/form.scss';
 
 type FormData = yup.InferType<typeof regSchema>;
@@ -18,6 +20,11 @@ const initialValues: FormData = {
 }
 
 const formFields: readonly (keyof FormData)[] = ["name", "email", "password", "confirmPassword"];
+
+const CustomTextField = styled(TextField)(({ theme }) => ({
+    width: 'calc(100% - 20px)',
+    margin: '1.5rem 0',
+}));
 
 export const RegForm: FC = () => {
 
@@ -59,21 +66,17 @@ export const RegForm: FC = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             {
-                formFields.map((field, index) => (
-                    <Fragment key={index} >
-                        <label>
-                            {
-                                field.charAt(0).toUpperCase() + field.slice(1)
-                            }
-                            <input 
-                                type={field === "password" || field === "confirmPassword" ? "password" : "text"}
-                                {...register(field as keyof FormData)}
-                                placeholder={field + "..."}
-                                aria-invalid={errors[field] ? "true" : "false"}
-                            />
-                        </label>
-                        { (errors[field] && getValues(field) ) && <Alert severity="error">{errors[field]?.message}</Alert> }
-                    </Fragment>
+                formFields.map((field) => (
+                    <CustomTextField 
+                        key={field}
+                        type={field === "password" || field === "confirmPassword" ? "password" : "text"}
+                        {...register(field as keyof FormData)}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">{field === "email" ? <AccountCircle /> : null}</InputAdornment>,
+                        }}
+                        label={field.charAt(0).toUpperCase() + field.slice(1)}
+                        error={!!errors[field] && getValues(field)?.trim() !== ''}
+                    />
                 ))
             }
 
