@@ -22,7 +22,9 @@ function shuffleArray(array: number[]): number[] {
     return array;
 }
 
-export function matrixWithDangerousCells(squareSideLength: number): GridCellDoNotTouchMode[][] {
+export function matrixWithDangerousCells(
+    squareSideLength: number
+): GridCellDoNotTouchMode[][] {
     const numsMatrix = matrixNumbersGenerator(squareSideLength);
 
     const totalCells = squareSideLength * squareSideLength;
@@ -31,7 +33,9 @@ export function matrixWithDangerousCells(squareSideLength: number): GridCellDoNo
     const shuffledIndices = shuffleArray(indices);
 
     const dangerousCellsCount = Math.floor(totalCells / 5);
-    const dangerousIndices = new Set(shuffledIndices.slice(0, dangerousCellsCount));
+    const dangerousIndices = new Set(
+        shuffledIndices.slice(0, dangerousCellsCount)
+    );
 
     const grid = numsMatrix.map((row, rowIndex) => {
         return row.map((cell, cellIndex) => {
@@ -42,8 +46,8 @@ export function matrixWithDangerousCells(squareSideLength: number): GridCellDoNo
                 cellIndex,
                 done: false,
                 failed: false,
-                dangerous: dangerousIndices.has(flatIndex)
-            }
+                dangerous: dangerousIndices.has(flatIndex),
+            };
         });
     });
 

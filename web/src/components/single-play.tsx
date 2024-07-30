@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 import { GamePanel } from '../components/game-panel';
 import { TimerMode } from '../modes/timer-mode/timer-mode';
 import { DoNotTouch } from '../modes/do-not-touch-mode/do-not-touch-mode';
@@ -11,7 +11,7 @@ export const SinglePlay = () => {
     const [startNewGame, setStartNewGame] = useState<boolean>(false);
 
     const renderGameMode = () => {
-        if(!startNewGame) return null;
+        if (!startNewGame) return null;
 
         switch (selectedGameMode) {
             case gameModes[0]:
@@ -21,25 +21,21 @@ export const SinglePlay = () => {
             default:
                 return null;
         }
-    }
+    };
 
     return (
         <div>
-
-            <GamePanel 
-                gridSize={gridSize} 
+            <GamePanel
+                gridSize={gridSize}
                 selectedGameMode={selectedGameMode}
                 startNewGame={startNewGame}
-                setGridSize={setGridSize} 
+                setGridSize={setGridSize}
                 setStartNewGame={setStartNewGame}
-                setSelectedGameMode={setSelectedGameMode} 
-                gameModes={gameModes} 
+                setSelectedGameMode={setSelectedGameMode}
+                gameModes={gameModes}
             />
 
-            {
-                renderGameMode()
-            }
-
+            {renderGameMode()}
         </div>
-    )
-}
+    );
+};
